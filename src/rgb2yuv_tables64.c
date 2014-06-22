@@ -37,7 +37,7 @@ void rgb2yuv_tables64(uint8_t *pixels, int count)
 	int t;
 	uint8_t r, g, b;
 	int64_t c1 = (128LL << 32) + (128 << 16) + 128 +
-			(16LL << 40) + (128 << 24) + (128 << 8);
+			(16LL << 40) + (128LL << 24) + (128 << 8);
 
 	for (t = 0; t < count * 4; t += 4)
 	{
