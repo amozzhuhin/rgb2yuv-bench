@@ -9,13 +9,17 @@
 
 static int64_t t_r3[256], t_g3[256], t_b3[256];
 
-void rgb2yuv_tables64_init(void)
+#define RGB2Y(R, G, B, C) ((t00[R] + t01[G] + t02[B] + C03) >> 8)
+#define RGB2U(R, G, B, C) ((t10[R] + t11[G] + t12[B] + C13) >> 8)
+#define RGB2V(R, G, B, C) ((t20[R] + t21[G] + t22[B] + C23) >> 8)
+
+
+void rgb2yuv_tables64_init(VideoConvert *convert)
 {
 	int i, j;
-	int k_r[] = {  66, -38, 112 };
-	int k_g[] = { 129, -74, -94 };
-	int k_b[] = {  25, 112, -18 };
-
+	int k_r[] = { convert->cmatrix[0][0], convert->cmatrix[1][0], convert->cmatrix[2][0] };
+	int k_g[] = { convert->cmatrix[0][1], convert->cmatrix[1][1], convert->cmatrix[2][1] };
+	int k_b[] = { convert->cmatrix[0][2], convert->cmatrix[1][2], convert->cmatrix[2][2] };
 
 	for (i = 0; i <= 255; i++)
 	{
@@ -32,20 +36,21 @@ void rgb2yuv_tables64_init(void)
 	}
 }
 
-void rgb2yuv_tables64(uint8_t *pixels, int count)
+void rgb2yuv_tables64(VideoConvert *convert, uint8_t *pixels)
 {
 	int t;
 	uint8_t r, g, b;
-	int64_t c1 = (128LL << 32) + (128 << 16) + 128 +
-			(16LL << 40) + (128LL << 24) + (128 << 8);
+	int64_t c = ((int64_t) convert->cmatrix[0][3] << 32)
+			+ ((int64_t) convert->cmatrix[1][3] << 16)
+			+ ((int64_t) convert->cmatrix[2][3] << 0);
 
-	for (t = 0; t < count * 4; t += 4)
+	for (t = 0; t < convert->width * 4; t += 4)
 	{
 		r = pixels[t + 1];
 		g = pixels[t + 2];
 		b = pixels[t + 3];
 
-		int64_t x3 = t_r3[r] + t_g3[g] + t_b3[b] + c1;
+		int64_t x3 = t_r3[r] + t_g3[g] + t_b3[b] + c;
 
 		pixels[t + 1] = x3 >> 40;
 		pixels[t + 2] = x3 >> 24;

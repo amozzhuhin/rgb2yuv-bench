@@ -9,6 +9,11 @@
 
 #include <stdint.h>
 
+typedef struct _VideoConvert {
+	int		cmatrix[4][4];
+	int		width;
+} VideoConvert;
+
 /*
  * RGB2YUV conversion implementations
  * @param pixels Buffer with pixels in RGB on input and in YUV on output.
@@ -18,11 +23,11 @@
 
 void rgb2yuv_wiki(uint8_t *pixels, int count);
 void rgb2yuv_novell_ch(uint8_t *pixels, int count);
-void rgb2yuv_tables(uint8_t *pixels, int count);
-void rgb2yuv_gstreamer(uint8_t *pixels, int count);
-void rgb2yuv_tables64(uint8_t *pixels, int count);
+void rgb2yuv_tables(VideoConvert *convert, uint8_t *pixels);
+void rgb2yuv_gstreamer(VideoConvert *convert, uint8_t *pixels);
+void rgb2yuv_tables64(VideoConvert *convert, uint8_t *pixels);
 
-void rgb2yuv_tables_init(void);
-void rgb2yuv_tables64_init(void);
+void rgb2yuv_tables_init(VideoConvert *convert);
+void rgb2yuv_tables64_init(VideoConvert *convert);
 
 #endif /* RGB2YUV_H_ */

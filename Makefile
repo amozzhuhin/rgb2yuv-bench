@@ -8,7 +8,7 @@ BINDIR 		= bin
 OBJDIR 		= obj
 VPATH		= src
 
-C_FILES		= main rgb2yuv_wiki rgb2yuv_novell_ch rgb2yuv_tables rgb2yuv_tables64
+C_FILES		= main rgb2yuv_tables rgb2yuv_tables64 rgb2yuv_gstreamer
 OBJS		= $(addprefix $(OBJDIR)/, $(addsuffix .o, $(C_FILES)))
 
 CFLAGS		= -fmessage-length=0 -fstack-protector -O2 -Wall -D_FORTIFY_SOURCE=2 -funwind-tables -fasynchronous-unwind-tables -g \
