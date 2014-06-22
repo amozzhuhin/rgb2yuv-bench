@@ -9,11 +9,6 @@
 
 static int64_t t_r3[256], t_g3[256], t_b3[256];
 
-#define RGB2Y(R, G, B, C) ((t00[R] + t01[G] + t02[B] + C03) >> 8)
-#define RGB2U(R, G, B, C) ((t10[R] + t11[G] + t12[B] + C13) >> 8)
-#define RGB2V(R, G, B, C) ((t20[R] + t21[G] + t22[B] + C23) >> 8)
-
-
 void rgb2yuv_tables64_init(VideoConvert *convert)
 {
 	int i, j;
